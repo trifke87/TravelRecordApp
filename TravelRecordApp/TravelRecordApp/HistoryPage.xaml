@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="TravelRecordApp.HistoryPage"
+             xmlns:converters="clr-namespace:TravelRecordApp.ViewModel.Converters"
+             x:Name="Histroy">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:DateTimeToString x:Key="DateTimeToStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ListView x:Name="postListView"
+              IsPullToRefreshEnabled="True"
+              RefreshCommand="{Binding RefreshCommand}"
+              IsRefreshing="{Binding IsRefreshing}"
+              ItemsSource="{Binding Posts}"
+              ItemSelected="PostListView_ItemSelected">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextCell Text="{Binding Experience}"
+                          Detail="{Binding createdAt, Converter={StaticResource DateTimeToStringConverter}}">
+                    <TextCell.ContextActions>
+                        <MenuItem Text="Delete"
+                                  Command="{Binding Path=BindingContext.DeletePostListCommand, Source={x:Reference Histroy}}"
+                                  CommandParameter="{Binding .}"
+                                  IsDestructive="True"/>
+                    </TextCell.ContextActions>
+                </TextCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+    
+</ContentPage>
